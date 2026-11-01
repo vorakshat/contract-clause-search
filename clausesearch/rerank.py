@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 
 import numpy as np
@@ -20,22 +21,36 @@ def load_cross_encoder(model_name: str, max_length: int):
 
 
 class ScoreCache:
+    """Key -> score store in SQLite.
+
+    A short-lived connection is opened for every call, so the cache can be used from
+    any thread (Streamlit runs each interaction on a new thread, and SQLite refuses a
+    connection created on a different thread).
+    """
+
     def __init__(self, path: str | Path):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(str(path))
-        self.conn.execute("CREATE TABLE IF NOT EXISTS scores (key TEXT PRIMARY KEY, score REAL)")
+        self.path = str(path)
+        with self._connect() as conn:
+            conn.execute("CREATE TABLE IF NOT EXISTS scores (key TEXT PRIMARY KEY, score REAL)")
+            conn.commit()
+
+    def _connect(self):
+        return closing(sqlite3.connect(self.path, timeout=30))
 
     def get_many(self, keys: list[str]) -> dict[str, float]:
         found: dict[str, float] = {}
-        for i in range(0, len(keys), 500):
-            batch = keys[i:i + 500]
-            marks = ",".join("?" * len(batch))
-            found.update(self.conn.execute(f"SELECT key, score FROM scores WHERE key IN ({marks})", batch))
+        with self._connect() as conn:
+            for i in range(0, len(keys), 500):
+                batch = keys[i:i + 500]
+                marks = ",".join("?" * len(batch))
+                found.update(conn.execute(f"SELECT key, score FROM scores WHERE key IN ({marks})", batch))
         return found
 
     def put_many(self, items: dict[str, float]) -> None:
-        self.conn.executemany("INSERT OR REPLACE INTO scores VALUES (?, ?)", list(items.items()))
-        self.conn.commit()
+        with self._connect() as conn:
+            conn.executemany("INSERT OR REPLACE INTO scores VALUES (?, ?)", list(items.items()))
+            conn.commit()
 
 
 class Reranker:

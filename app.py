@@ -31,12 +31,14 @@ def example_questions(config_path: str) -> list[str]:
     return [q.text for q in queries]
 
 
-configs = sorted(str(p) for p in Path("configs").glob("*.yaml") if p.name != "objective.yaml")
+# as_posix() gives "configs/final.yaml" on Windows too (str() would give "configs\\final.yaml").
+configs = sorted(p.as_posix() for p in Path("configs").glob("*.yaml") if p.name != "objective.yaml")
 default = "configs/final.yaml" if "configs/final.yaml" in configs else "configs/baseline.yaml"
+default_index = configs.index(default) if default in configs else 0
 
 with st.sidebar:
     st.header("Settings")
-    config_path = st.selectbox("Pipeline configuration", configs, index=configs.index(default))
+    config_path = st.selectbox("Pipeline configuration", configs, index=default_index)
     top_k = st.slider("Passages to show", 1, 10, 5)
     context_chars = st.slider("Context around each passage (characters)", 0, 1000, 300, step=100)
     try:
