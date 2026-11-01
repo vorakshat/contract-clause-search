@@ -1,0 +1,29 @@
+{
+  "iteration": 10,
+  "current_config": "configs\\iterations\\iter04.yaml",
+  "current_run": "experiments\\runs\\20261102-002029_iter04_train",
+  "tried": [
+    "ea5317eb2af0",
+    "8e2bb6c67858",
+    "8e2bb6c67858",
+    "f895c762d155",
+    "0cbefae270b9",
+    "2fb0e6a91bf1",
+    "b52a89f46142",
+    "47fabb0b4698",
+    "47fabb0b4698",
+    "1ef8fe74ad86",
+    "1ef8fe74ad86",
+    "74ee78ed4b56",
+    "74ee78ed4b56",
+    "7c90d40a0baf",
+    "c24e874b2814",
+    "9489b4743c06",
+    "3868205fbff5",
+    "5a173bf11bd8",
+    "90441f5e1908",
+    "78fe7e125fb0",
+    "78fe7e125fb0"
+  ],
+  "unanswerable_commit": "a758a0a"
+}
