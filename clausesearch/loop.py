@@ -261,8 +261,24 @@ def decide(cur_records: list[dict], cur_summary: dict, cand_records: list[dict],
 
 # --------------------------------------------------------------------------- running
 
-def run_candidate(cfg: dict, objective: dict, out_dir: Path) -> tuple[dict, dict, list[dict], Path, dict | None]:
-    """Evaluate a candidate on train, re-calibrating the gate threshold first if it is enabled."""
+def guardrail_floors(cur_records: list[dict], cur_summary: dict, objective: dict) -> dict:
+    """Threshold-dependent limits a candidate must meet, relative to the current configuration."""
+    guard = objective["guardrails"]
+    cur = key_metrics(cur_records, cur_summary, objective["k"])
+    car = cur["correct_abstention"]
+    return {
+        "min_correct_abstention": max(0.0, car - guard["correct_abstention_drop"]) if math.isfinite(car) else None,
+        "min_precision": cur["precision"] * (1 - guard["e2e_precision_relative_drop"]),
+    }
+
+
+def run_candidate(cfg: dict, objective: dict, out_dir: Path,
+                  floors: dict | None = None) -> tuple[dict, dict, list[dict], Path, dict | None]:
+    """Evaluate a candidate on train, re-calibrating the gate threshold first if it is enabled.
+
+    The threshold is chosen within every guardrail that depends on it (see calibrate.py),
+    so a candidate is never rejected merely because its threshold was tuned past one.
+    """
     calibration = None
     if cfg["abstention"]["enabled"]:
         score_name = preferred_gate_score(cfg)
@@ -273,7 +289,8 @@ def run_candidate(cfg: dict, objective: dict, out_dir: Path) -> tuple[dict, dict
         _, probe_records, _ = evaluate(probe, "train", pipeline=pipeline, write=False, progress=False)
         min_cov = cfg["routing"]["min_coverage"] if cfg["routing"]["enabled"] else None
         calibration = calibrate_threshold(probe_records, score_name, objective["k"],
-                                          objective["guardrails"]["max_false_abstention"], min_cov)
+                                          objective["guardrails"]["max_false_abstention"], min_cov,
+                                          **(floors or {}))
         threshold = calibration["threshold"] if math.isfinite(calibration["threshold"]) else NEVER
         cfg = set_path(cfg, "abstention.threshold", round(float(threshold), 6))
         pipeline.cfg = cfg
@@ -338,6 +355,13 @@ def write_log_markdown(out_dir: Path) -> None:
                     else "no score threshold helps; abstains only when routing finds no matching contract")
             lines.append(f"- Gate calibrated on train: {rule} (simulated utility {c['utility']:.4f}, "
                          f"FAR {c['false_abstention_rate']:.1%}, CAR {c['correct_abstention_rate']:.1%})")
+            if c.get("floors"):
+                f = c["floors"]
+                note = "met" if c.get("constrained") else "could not be met by any threshold"
+                car_floor = f"{f['min_correct_abstention']:.1%}" if f.get("min_correct_abstention") is not None else "none"
+                prec_floor = f"{f['min_precision']:.4f}" if f.get("min_precision") is not None else "none"
+                lines.append(f"- Threshold chosen within guardrails (CAR >= {car_floor}, P@8 >= {prec_floor}, "
+                             f"FAR <= {f['max_false_abstention']:.0%}): {note}")
         if e.get("reasons"):
             lines.append(f"- Rejected because: {'; '.join(e['reasons'])}")
         if e.get("folds"):
@@ -450,7 +474,8 @@ def main(argv: list[str] | None = None) -> int:
 
         print(f"\n=== Iteration {iteration}: {chosen.changes} ({chosen.proposer})\n    {chosen.rationale}")
         proposed_hash = body_hash(cand_cfg)
-        cand_cfg, summary, records, run_dir, calibration = run_candidate(cand_cfg, objective, out_dir)
+        floors = guardrail_floors(cur_records, cur_summary, objective)
+        cand_cfg, summary, records, run_dir, calibration = run_candidate(cand_cfg, objective, out_dir, floors)
         accepted, reasons, stats = decide(cur_records, cur_summary, records, summary, objective)
         dump_config(cand_cfg, configs_dir / "iterations" / f"{name}.yaml")
         state.data["tried"] += [proposed_hash, body_hash(cand_cfg)]

@@ -24,6 +24,24 @@ def test_calibration_picks_the_best_threshold_under_the_ceiling():
     assert cal["utility"] == pytest.approx(0.875) and cal["false_abstention_rate"] == 0
 
 
+def test_calibration_respects_the_correct_abstention_floor():
+    recs = [
+        {"answerable": True, "forced": {"recall@8": 1.0, "precision@8": 0.2}, "top_scores": {"rerank": 5.0}},
+        {"answerable": True, "forced": {"recall@8": 1.0, "precision@8": 0.2}, "top_scores": {"rerank": 2.0}},
+        {"answerable": False, "top_scores": {"rerank": 1.0}},
+        {"answerable": False, "top_scores": {"rerank": 3.0}},
+    ]
+    free = calibrate_threshold(recs, "rerank", 8, max_false_abstention=0.5)
+    assert free["threshold"] == pytest.approx(1.5) and free["correct_abstention_rate"] == 0.5
+    floored = calibrate_threshold(recs, "rerank", 8, max_false_abstention=0.5, min_correct_abstention=0.9)
+    assert floored["threshold"] == pytest.approx(4.0) and floored["constrained"]
+    assert floored["correct_abstention_rate"] == 1.0 and floored["utility"] == free["utility"]
+    impossible = calibrate_threshold(recs, "rerank", 8, max_false_abstention=0.0, min_correct_abstention=0.9)
+    assert not impossible["constrained"] and impossible["threshold"] == pytest.approx(1.5)
+    precise = calibrate_threshold(recs, "rerank", 8, max_false_abstention=0.5, min_precision=0.15)
+    assert precise["threshold"] == pytest.approx(1.5)  # abstaining on a benchmark question costs precision
+
+
 def test_routing_coverage_also_abstains_in_simulation():
     records = RECORDS + [{"answerable": False, "top_scores": {"rerank": 9.0}, "routed": [["x", 0.2]]}]
     assert simulate_gate(records, "rerank", -math.inf, 8, min_coverage=0.5)["correct_abstention_rate"] == pytest.approx(1 / 3)
