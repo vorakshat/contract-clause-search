@@ -1,0 +1,103 @@
+{
+  "config": "iter12",
+  "config_hash": "1c293f53ab68",
+  "split": "train",
+  "n_queries": 170,
+  "n_answerable": 140,
+  "n_unanswerable": 30,
+  "false_abstention_rate": 0.05,
+  "correct_abstention_rate": 0.6666666666666666,
+  "forced": {
+    "precision@1": 0.4000166854115834,
+    "recall@1": 0.4310656336385239,
+    "doc_hit@1": 1.0,
+    "span_hit@1": 0.5428571428571428,
+    "precision@2": 0.25265082508352815,
+    "recall@2": 0.5218593299857526,
+    "doc_hit@2": 1.0,
+    "span_hit@2": 0.6071428571428571,
+    "precision@4": 0.16136542958651187,
+    "recall@4": 0.645167405063948,
+    "doc_hit@4": 1.0,
+    "span_hit@4": 0.7285714285714285,
+    "precision@8": 0.09096972816163669,
+    "recall@8": 0.7170574958784158,
+    "doc_hit@8": 1.0,
+    "span_hit@8": 0.7928571428571428,
+    "precision@16": 0.05253217229714996,
+    "recall@16": 0.8024229026300271,
+    "doc_hit@16": 1.0,
+    "span_hit@16": 0.8857142857142857,
+    "precision@32": 0.03244174947522974,
+    "recall@32": 0.8845582101233356,
+    "doc_hit@32": 1.0,
+    "span_hit@32": 0.95,
+    "precision@64": 0.02236143151443812,
+    "recall@64": 0.9458606342376872,
+    "doc_hit@64": 1.0,
+    "span_hit@64": 0.9857142857142858,
+    "mrr": 0.6333355514520415
+  },
+  "e2e": {
+    "precision@1": 0.4000166854115834,
+    "recall@1": 0.4310656336385239,
+    "doc_hit@1": 0.95,
+    "span_hit@1": 0.5428571428571428,
+    "precision@2": 0.25265082508352815,
+    "recall@2": 0.5218593299857526,
+    "doc_hit@2": 0.95,
+    "span_hit@2": 0.6071428571428571,
+    "precision@4": 0.16136542958651187,
+    "recall@4": 0.645167405063948,
+    "doc_hit@4": 0.95,
+    "span_hit@4": 0.7285714285714285,
+    "precision@8": 0.08944522725419567,
+    "recall@8": 0.7099146387355587,
+    "doc_hit@8": 0.95,
+    "span_hit@8": 0.7857142857142857,
+    "precision@16": 0.051485778818729844,
+    "recall@16": 0.7881371883443129,
+    "doc_hit@16": 0.95,
+    "span_hit@16": 0.8714285714285714,
+    "precision@32": 0.030676243527046815,
+    "recall@32": 0.850019457383746,
+    "doc_hit@32": 0.95,
+    "span_hit@32": 0.9142857142857143,
+    "precision@64": 0.02084345965510986,
+    "recall@64": 0.9085380730779166,
+    "doc_hit@64": 0.95,
+    "span_hit@64": 0.9428571428571428,
+    "mrr": 0.6304106662948513
+  },
+  "buckets": {
+    "full": 88,
+    "wrong_section": 12,
+    "near_miss": 11,
+    "partial": 22,
+    "false_abstention": 7,
+    "false_answer": 10,
+    "correct_abstention": 20
+  },
+  "abstain_reasons": {
+    "low_confidence": 20,
+    "contract_not_found": 7
+  },
+  "unanswerable_by_type": {
+    "absent_clause": {
+      "n": 13,
+      "correct_abstention_rate": 0.46153846153846156
+    },
+    "not_in_corpus": {
+      "n": 7,
+      "correct_abstention_rate": 1.0
+    },
+    "out_of_scope": {
+      "n": 10,
+      "correct_abstention_rate": 0.7
+    }
+  },
+  "latency_ms": {
+    "mean": 22.152941176470584,
+    "p95": 61.40499999999998
+  }
+}

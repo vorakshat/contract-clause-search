@@ -10,6 +10,7 @@ import argparse
 import json
 import re
 import sys
+from pathlib import Path
 
 from .chunking import doc_title
 from .config import load_config
@@ -41,7 +42,8 @@ def as_json(result: SearchResult) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("question", nargs="?")
-    ap.add_argument("--config", default="configs/baseline.yaml")
+    default_config = "configs/final.yaml" if Path("configs/final.yaml").exists() else "configs/baseline.yaml"
+    ap.add_argument("--config", default=default_config, help=f"default: {default_config}")
     ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE")
     ap.add_argument("-k", "--top-k", type=int, default=5)
     ap.add_argument("--json", action="store_true")

@@ -1,5 +1,5 @@
 name: final
-description: Best configuration found by the loop (configs\iterations\iter04.yaml).
+description: Best configuration found by the loop (configs\iterations\iter11.yaml).
 data:
   benchmark_path: data/raw/benchmarks/cuad.json
   corpus_dir: data/raw/corpus
@@ -7,8 +7,8 @@ data:
   unanswerable_path: data/unanswerable.jsonl
   mini_size: 194
 chunking:
-  strategy: fixed
-  chunk_size: 500
+  strategy: clause
+  chunk_size: 600
   overlap: 0
   min_chunk_size: 100
   contextual_header: false
@@ -43,7 +43,7 @@ rerank:
 abstention:
   enabled: true
   score: rerank
-  threshold: -6.107153
+  threshold: -5.773092
 postprocess:
   trim_spans: false
   trim_keep_ratio: 0.5

@@ -1,7 +1,7 @@
 {
-  "iteration": 10,
-  "current_config": "configs\\iterations\\iter04.yaml",
-  "current_run": "experiments\\runs\\20261102-002029_iter04_train",
+  "iteration": 13,
+  "current_config": "configs\\iterations\\iter11.yaml",
+  "current_run": "experiments\\runs\\20261102-005611_iter11_train",
   "tried": [
     "ea5317eb2af0",
     "8e2bb6c67858",
@@ -23,7 +23,13 @@
     "5a173bf11bd8",
     "90441f5e1908",
     "78fe7e125fb0",
-    "78fe7e125fb0"
+    "78fe7e125fb0",
+    "9489b4743c06",
+    "83e782514b0f",
+    "8183675f2aa6",
+    "1eeed0ae4f68",
+    "a694b5159812",
+    "98536d02508d"
   ],
   "unanswerable_commit": "a758a0a"
 }
