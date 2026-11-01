@@ -1,0 +1,2 @@
+{"time": "2026-11-02T01:10:14", "config": "baseline", "config_hash": "ff0c1c540949", "split": "test", "run_dir": "experiments\\runs\\20261102-011014_baseline_test"}
+{"time": "2026-11-02T01:13:26", "config": "final", "config_hash": "7c4cdd6e9a25", "split": "test", "run_dir": "experiments\\runs\\20261102-011326_final_test"}

@@ -1,0 +1,98 @@
+{
+  "config": "baseline",
+  "config_hash": "ff0c1c540949",
+  "split": "train",
+  "n_queries": 170,
+  "n_answerable": 140,
+  "n_unanswerable": 30,
+  "false_abstention_rate": 0.0,
+  "correct_abstention_rate": 0.0,
+  "forced": {
+    "precision@1": 0.0,
+    "recall@1": 0.0,
+    "doc_hit@1": 1.0,
+    "span_hit@1": 0.0,
+    "precision@2": 0.0,
+    "recall@2": 0.0,
+    "doc_hit@2": 1.0,
+    "span_hit@2": 0.0,
+    "precision@4": 0.0034047037707438245,
+    "recall@4": 0.012947422639193249,
+    "doc_hit@4": 1.0,
+    "span_hit@4": 0.03571428571428571,
+    "precision@8": 0.008932018856863828,
+    "recall@8": 0.08027905042763833,
+    "doc_hit@8": 1.0,
+    "span_hit@8": 0.15714285714285714,
+    "precision@16": 0.011265988371214187,
+    "recall@16": 0.16274575570569386,
+    "doc_hit@16": 1.0,
+    "span_hit@16": 0.3,
+    "precision@32": 0.009028653540803953,
+    "recall@32": 0.25296911892958285,
+    "doc_hit@32": 1.0,
+    "span_hit@32": 0.4,
+    "precision@64": 0.006567401561366347,
+    "recall@64": 0.39192026375268907,
+    "doc_hit@64": 1.0,
+    "span_hit@64": 0.5285714285714286,
+    "mrr": 0.0520417944258392
+  },
+  "e2e": {
+    "precision@1": 0.0,
+    "recall@1": 0.0,
+    "doc_hit@1": 1.0,
+    "span_hit@1": 0.0,
+    "precision@2": 0.0,
+    "recall@2": 0.0,
+    "doc_hit@2": 1.0,
+    "span_hit@2": 0.0,
+    "precision@4": 0.0034047037707438245,
+    "recall@4": 0.012947422639193249,
+    "doc_hit@4": 1.0,
+    "span_hit@4": 0.03571428571428571,
+    "precision@8": 0.008932018856863828,
+    "recall@8": 0.08027905042763833,
+    "doc_hit@8": 1.0,
+    "span_hit@8": 0.15714285714285714,
+    "precision@16": 0.011265988371214187,
+    "recall@16": 0.16274575570569386,
+    "doc_hit@16": 1.0,
+    "span_hit@16": 0.3,
+    "precision@32": 0.009028653540803953,
+    "recall@32": 0.25296911892958285,
+    "doc_hit@32": 1.0,
+    "span_hit@32": 0.4,
+    "precision@64": 0.006567401561366347,
+    "recall@64": 0.39192026375268907,
+    "doc_hit@64": 1.0,
+    "span_hit@64": 0.5285714285714286,
+    "mrr": 0.0520417944258392
+  },
+  "buckets": {
+    "near_miss": 41,
+    "wrong_section": 77,
+    "full": 6,
+    "partial": 16,
+    "false_answer": 30
+  },
+  "abstain_reasons": {},
+  "unanswerable_by_type": {
+    "absent_clause": {
+      "n": 13,
+      "correct_abstention_rate": 0.0
+    },
+    "not_in_corpus": {
+      "n": 7,
+      "correct_abstention_rate": 0.0
+    },
+    "out_of_scope": {
+      "n": 10,
+      "correct_abstention_rate": 0.0
+    }
+  },
+  "latency_ms": {
+    "mean": 0.39588235294117635,
+    "p95": 0.6549999999999983
+  }
+}
