@@ -1,9 +1,9 @@
 """Benchmark loading, the LegalBench-RAG-mini subset, the fixed train/test split,
 the unanswerable set and offset validation.
 
-Benchmark offsets index into each contract read in Python's default text mode with
-UTF-8 (universal newlines, so "\\r\\n" becomes "\\n"). Every read in this project goes
-through read_document() so offsets stay consistent everywhere.
+Benchmark offsets are positions in the string returned by open(path, encoding="utf-8")
+.read(), where newline translation turns "\\r\\n" into "\\n". Every read in this project
+goes through read_document() so offsets stay consistent everywhere.
 """
 from __future__ import annotations
 

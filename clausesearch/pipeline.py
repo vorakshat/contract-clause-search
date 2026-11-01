@@ -22,7 +22,7 @@ from .text import tokenize
 
 ABSTAIN_MESSAGES = {
     "contract_not_found": "The contract named in the question is not in the indexed corpus.",
-    "low_confidence": "No passage is relevant enough to answer this question.",
+    "low_confidence": "No passage scored above the confidence threshold for this question.",
     "no_candidates": "No passages matched the question.",
 }
 

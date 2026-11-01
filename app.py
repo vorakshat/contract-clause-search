@@ -49,8 +49,8 @@ with st.sidebar:
             st.caption(doc_title(doc_id))
 
 st.title("Contract clause search")
-st.write("Ask a question about one of the indexed contracts. The system returns the passages most likely "
-         "to answer it, with their file and character offsets, or says that no passage is relevant enough.")
+st.write("Ask a question about one of the indexed contracts. You get the best-matching passages, each with "
+         "its file and character positions, or a 'no answer' message when nothing clears the confidence threshold.")
 
 examples = example_questions(config_path)
 picked = st.selectbox("Example questions from the train split (optional)", [""] + examples)

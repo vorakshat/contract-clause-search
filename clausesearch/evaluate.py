@@ -9,8 +9,8 @@ config, metrics.json, per_query.jsonl and summary.md.
 Two views of retrieval quality are reported for benchmark (answerable) queries:
   forced  the ranked candidates with the confidence gate ignored (pure retrieval)
   e2e     what a user actually gets: an abstained query scores P = R = 0
-Abstention is reported in both directions: correct abstention on the unanswerable
-set and false abstention on benchmark queries.
+Abstention errors are counted on both sides: unanswerable questions the system still
+answers, and benchmark questions it refuses.
 
 Test-set runs are refused unless --confirm-test is given, and every one is appended
 to experiments/test_runs.jsonl so the report can state how often test was used.
