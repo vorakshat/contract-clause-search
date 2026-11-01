@@ -70,6 +70,22 @@ def test_load_unanswerable_validates_and_computes_split(tmp_path):
         load_unanswerable(path)
 
 
+def test_build_unanswerable_script_writes_a_valid_set(tiny_project, tmp_path):
+    import subprocess
+    import sys
+    assert prepare.main(["--config", tiny_project["config_path"]]) == 0
+    out = tmp_path / "u.jsonl"
+    subprocess.run([sys.executable, "scripts/build_unanswerable.py", "--config", tiny_project["config_path"],
+                    "--out", str(out)], check=True, capture_output=True)
+    queries = load_unanswerable(out)
+    assert queries and all(q.text.startswith("Consider the ") for q in queries)
+    corpus = load_corpus(load_config(tiny_project["config_path"]))
+    for q in queries:  # absent-clause checks really found nothing in the named contract
+        if q.meta["type"] == "absent_clause":
+            pattern = q.meta["verified"].split("/")[1]
+            assert not __import__("re").search(pattern, corpus[q.meta["contract"]].lower())
+
+
 def test_prepare_end_to_end(tiny_project):
     assert prepare.main(["--config", tiny_project["config_path"]]) == 0
     cfg = load_config(tiny_project["config_path"])

@@ -201,6 +201,8 @@ def propose(diag: dict, cfg: dict) -> list[Proposal]:
                             "its best-matching sentences."))
 
     grid: list[tuple[dict, str]] = []
+    if rc["method"] != "hybrid":
+        grid.append(({"retrieval.method": "hybrid"}, "hybrid retrieval"))
     for size in (300, 800):
         if ch["chunk_size"] != size:
             grid.append(({"chunking.chunk_size": size}, f"chunk size {size}"))
@@ -211,15 +213,12 @@ def propose(diag: dict, cfg: dict) -> list[Proposal]:
         grid.append(({"chunking.overlap": ch["chunk_size"] // 4}, "overlapping chunks"))
     if not ch["contextual_header"]:
         grid.append(({"chunking.contextual_header": True}, "contract title + heading prepended to indexed text"))
-    if rr["enabled"]:
-        if rr["top_n"] != 30:
-            grid.append(({"rerank.top_n": 30}, "rerank fewer candidates"))
-        if rr["model"] != "BAAI/bge-reranker-base":
-            grid.append(({"rerank.model": "BAAI/bge-reranker-base"}, "larger reranker"))
-    if rc["method"] != "hybrid":
-        grid.append(({"retrieval.method": "hybrid"}, "hybrid retrieval"))
+    if rr["enabled"] and rr["top_n"] != 30:
+        grid.append(({"rerank.top_n": 30}, "rerank fewer candidates"))
     if cfg["routing"]["enabled"] and cfg["routing"]["top_docs"] == 1:
         grid.append(({"routing.top_docs": 2}, "route to the top 2 contracts"))
+    if rr["enabled"] and rr["model"] != "BAAI/bge-reranker-base":
+        grid.append(({"rerank.model": "BAAI/bge-reranker-base"}, "larger reranker (slow on CPU, so tried last)"))
     out += [Proposal(changes, f"Parameter search: {why}.", proposer="grid") for changes, why in grid]
     return out
 
