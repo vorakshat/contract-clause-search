@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.DS_Store
+
+# Downloaded and derived data (regenerate with the commands in the README)
+data/raw/
+data/processed/
+
+# Embedding, reranker and model caches
+cache/

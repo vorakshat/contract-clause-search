@@ -1,0 +1,13 @@
+name: baseline
+description: >
+  Simplest end-to-end pipeline. Fixed 500-character chunks with no overlap, BM25
+  over every indexed contract, no routing, no reranking, and no abstention.
+  Settings not listed here take their defaults from clausesearch/config.py.
+chunking:
+  strategy: fixed
+  chunk_size: 500
+  overlap: 0
+retrieval:
+  method: bm25
+abstention:
+  enabled: false

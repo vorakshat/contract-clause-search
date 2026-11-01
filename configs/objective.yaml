@@ -1,0 +1,23 @@
+# Objective and guardrails for the improvement loop.
+# Declared before iterating; the loop reads this file and never changes it.
+
+# Primary metric: utility@8, a per-query score averaged over all train queries.
+#   benchmark question:    share of the gold answer's characters inside the top 8
+#                          passages (character-level recall@8), or 0 if the system
+#                          wrongly returned nothing
+#   unanswerable question: 1 if the system correctly returned nothing, else 0
+# One number that rewards finding the clause and rewards saying "not found" only
+# when that is the truth.
+primary: utility@8
+k: 8
+
+# A candidate change is accepted only if all of these hold:
+min_improvement: 0.005   # utility@8 rises by at least half a point
+bootstrap_p: 0.90        # it wins in at least 90% of 2,000 paired bootstrap resamples of train queries
+fold_tolerance: 0.002    # and is not worse on either half of train (fixed hash-based halves)
+
+guardrails:
+  e2e_precision_relative_drop: 0.10  # precision@8 may not fall by more than 10% of its current value
+  max_false_abstention: 0.10         # at most 10% of benchmark questions may get "no answer"
+  correct_abstention_drop: 0.05      # correct abstention may not fall by more than 5 points
+  max_latency_p95_ms: 3000           # 95th-percentile query latency on a laptop CPU
