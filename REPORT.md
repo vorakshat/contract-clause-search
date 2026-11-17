@@ -50,7 +50,7 @@ I built a search system that finds the clause in a contract that answers a quest
 
 ## LLM use
 
-**In the improvement loop: yes, in a limited way.** Two of the thirteen iterations (7 and 11) were suggested by Claude (Anthropic's assistant, through claude.ai). I shared the loop's failure summary with it, and its suggestion went through exactly the same accept-or-reject rule as every other change. Iteration 7 (adding titles and headings to passages) was rejected. Iteration 11 was accepted: Claude noticed that iteration 8, the best idea so far, had been rejected because of a flaw in how the threshold was tuned. The suggestions are written in the experiment log, so the results can be reproduced without calling any model, and there is no cost per search. What I shared was the questions, file names and character positions, not contract text. With real JioStar agreements, failure summaries that include clause text would need to be redacted first, or handled by a model running in-house.
+**In the improvement loop: yes, in a limited way.** Two of the thirteen iterations (7 and 11) were suggested by Claude (Anthropic's assistant, through claude.ai). I shared the loop's failure summary with it, and its suggestion went through exactly the same accept-or-reject rule as every other change. Iteration 7 (adding titles and headings to passages) was rejected. Iteration 11 was accepted: Claude noticed that iteration 8, the best idea so far, had been rejected because of a flaw in how the threshold was tuned. The suggestions are written in the experiment log, so the results can be reproduced without calling any model, and there is no cost per search. What I shared was the questions, file names and character positions, not contract text. With real confidential contracts, failure summaries that include clause text would need to be redacted first, or handled by a model running in-house.
 
 **In the search itself: no.** The re-ranking model already does the job of reading each passage against the question, and it runs on my own machine. A hosted model would send confidential contract text to an outside company. A local model on a laptop would add several seconds per search, when searches already take 2.3 seconds on average. I also chose to spend the limited time on the core requirements. If I add one later, the most useful place is a final check of whether the top passages really answer the question. That is where the system is weakest: questions about clauses that do not exist. Its outputs would be cached, and it would be kept only if the loop's rule accepts it.
 
@@ -253,7 +253,7 @@ The re-ranker sometimes prefers a passage that repeats the question's words over
 
 **Before legal teams rely on it**
 
-- Evaluate on real JioStar agreements, with questions and answers marked by in-house lawyers.
+- Evaluate on real company agreements, with questions and answers marked by in-house lawyers.
 - Always show each passage in context with its location, and phrase "not found" as "the system did not find this", never as "the contract has no such clause".
 - Keep everything on company systems, with models running in-house, and log questions and answers for audit.
 - Have a person check anything a business decision depends on.

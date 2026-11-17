@@ -180,7 +180,6 @@ Where the brief left something open, this is what I assumed and why.
 - **The 45 unanswerable questions.** These are of three kinds: a clause that the named contract does not contain; a contract that is not in the collection; and a fact that contracts do not record, such as a company's credit rating. They are written in the same format as the benchmark questions, so the system cannot spot them by their wording. Each label was checked by searching the contract's text. The set was committed before the improvement loop began (commit "Freeze unanswerable query set (45 queries)") and has not been edited since.
 - **The expected answers are never used by the system.** They are used only for scoring, and to label the unanswerable questions when building them.
 - **"Contract not in the collection".** When the contract named in a question matches no contract well enough (a match score below 0.5), the system says it does not have that contract instead of searching a different one.
-- **Submission.** I read "collaborator access" as inviting datascience.ai@jiostar.com to this private repository.
 
 ## AI tool usage
 
